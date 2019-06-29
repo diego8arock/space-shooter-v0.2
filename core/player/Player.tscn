@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://core/player/Player.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/player/playerShip3_blue.png" type="Texture" id=2]
+[ext_resource path="res://core/player/PlayerTurret.tscn" type="PackedScene" id=3]
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="Debug" type="VBoxContainer" parent="."]
+margin_left = 9.0
+margin_top = 6.0
+margin_right = 49.0
+margin_bottom = 46.0
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 2 )
+
+[node name="PlayerTurret" parent="Sprite" instance=ExtResource( 3 )]
+position = Vector2( 0, 13.3333 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -6.41156, -14.6448, 6.82386, -3.33243, 11.2922, -1.40933, 11.575, 1.30563, 6.7673, 3.00248, -6.01563, 14.6542, -8.84371, 14.8239, -8.61747, 6.90523, -11.2193, 4.19027, -11.2759, -4.06773, -8.73059, -6.66956, -8.78715, -14.6448 )
