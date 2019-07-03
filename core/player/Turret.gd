@@ -1,5 +1,6 @@
 extends Sprite
 
+onready var shoot_timer = $ShootTimer
 onready var bullet : PackedScene = preload("res://core/weapons/bullets/BaseBullet.tscn")
 var parent
 var bullet_offset = 5
@@ -9,11 +10,11 @@ func _process(delta: float) -> void:
 	look_at(ReferenceManager.crosshair.global_position)	
 		
 	if Input.is_mouse_button_pressed(BUTTON_LEFT):
-		if $ShootTimer.time_left == 0:
-			$ShootTimer.start()
+		if shoot_timer.time_left == 0:
+			shoot_timer.start()
 			
 	if Input.is_action_just_released("left_button"):
-		$ShootTimer.stop()	
+		shoot_timer.stop()	
 
 
 func shoot() -> void:
