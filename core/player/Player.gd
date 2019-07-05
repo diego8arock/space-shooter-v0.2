@@ -2,7 +2,7 @@ extends KinematicBody2D
 class_name Player, "res://core/player/Player.tscn"
 
 var speed: float = 0.0
-var speed_rate: float = 1.0
+var speed_rate: float = 2.5
 var direction: Vector2 = Vector2(1,0)
 var velocity_rotation: float = 0.0
 var velocity_rotation_speed: float = 3.0
@@ -20,14 +20,11 @@ onready var collision = $CollisionPolygon2D
 
 onready var attack_zone = $AttackZone setget ,get_attack_zone_radius
 
-enum TIME_MODE {NORMAL, SLOW}
+enum TIME_MODE {NORMAL, SLOW, REWIND}
 var time_mode = TIME_MODE.NORMAL
 
 func _ready():	
-
-	debug.add_label("velocity")
-	debug.add_label("angle")
-	debug.add_label("speed")
+	pass
 
 func _process(delta: float) -> void:
 	
@@ -42,27 +39,31 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_pressed("ui_left"):
 		turning_left(delta)
-		
+
 func _physics_process(delta: float) -> void:	
 	
-	velocity = direction.normalized().rotated(velocity_rotation) * TimeManager.adjust_speed(speed)
-	debug.update_label("velocity", str(velocity))
-	debug.update_label("angle", str(rad2deg(velocity.angle())))
-	debug.update_label("speed", str(speed))
-	ship_sprite.global_rotation = velocity_rotation + deg2rad(90)
-	collision.global_rotation = velocity_rotation 
-	move_and_collide(velocity)
+	if not TimeManager.is_time_rewind:
+		velocity = direction.normalized().rotated(velocity_rotation) * TimeManager.adjust_speed(speed)
+		ship_sprite.global_rotation = velocity_rotation
+		collision.global_rotation = velocity_rotation 
+		move_and_collide(velocity)
 	
 func _input(event: InputEvent) -> void:
 	
-	if Input.is_action_just_pressed("button_right"):
-		print("mouse")
-		if time_mode == TIME_MODE.NORMAL:
-			time_mode = TIME_MODE.SLOW
-			TimeManager.slow_mode()		
-		else:
-			time_mode = TIME_MODE.NORMAL
-			TimeManager.normal_mode()	
+	if event is InputEventMouseButton:
+		if event.is_action_pressed("button_right") and time_mode != TIME_MODE.REWIND:
+			match time_mode:
+				TIME_MODE.NORMAL:
+					TimeManager.slow_mode()
+					time_mode = TIME_MODE.SLOW
+				TIME_MODE.SLOW:
+					TimeManager.normal_mode()
+					time_mode = TIME_MODE.NORMAL
+					
+	if event is InputEventKey:
+		if event.is_action_pressed("rewind"):
+			time_mode = TIME_MODE.REWIND
+			TimeManager.rewind()			
 	
 func foward(_delta: float) -> void:
 	
@@ -93,8 +94,9 @@ func turning_left(_delta: float) -> void:
 		turning(_delta, 1)
 		
 func turning(_delta: float, _direction: int) -> void:
+	
 	velocity_rotation += TimeManager.adjust_speed(velocity_rotation_speed) * _delta * _direction
 	
 func get_attack_zone_radius() -> float:
-	return (attack_zone.shape as CircleShape2D).radius
 	
+	return (attack_zone.shape as CircleShape2D).radius
