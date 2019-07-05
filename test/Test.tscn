@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://test/Test.gd" type="Script" id=1]
 [ext_resource path="res://core/player/Player.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://core/containers/weapon_container/WeaponContainer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://core/containers/weapon_container/WeaponContainer.gd" type="Script" id=5]
 [ext_resource path="res://core/enemies/basic/Basic.tscn" type="PackedScene" id=6]
+[ext_resource path="res://core/props/obstacles/simple/SimpleObstacle.tscn" type="PackedScene" id=7]
+[ext_resource path="res://core/allies/basic/Basic.tscn" type="PackedScene" id=8]
 
 [node name="Test" type="Node2D"]
 script = ExtResource( 1 )
@@ -21,7 +23,6 @@ color = Color( 0, 0, 0, 1 )
 position = Vector2( 509.511, 298.34 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-editor/display_folded = true
 current = true
 
 [node name="Crosshair" parent="Player/Camera2D" instance=ExtResource( 3 )]
@@ -30,5 +31,30 @@ current = true
 script = ExtResource( 5 )
 
 [node name="Basic" parent="." instance=ExtResource( 6 )]
-position = Vector2( 206.268, 123.761 )
 player_path = NodePath("../Player")
+
+[node name="SimpleObstacle" parent="." instance=ExtResource( 7 )]
+position = Vector2( 400, 200 )
+
+[node name="Allies" type="Node2D" parent="."]
+
+[node name="Basic2" parent="Allies" instance=ExtResource( 8 )]
+position = Vector2( 316.541, 327.093 )
+player_path = NodePath("../../Player")
+allies_path = NodePath("..")
+
+[node name="Basic3" parent="Allies" instance=ExtResource( 8 )]
+player_path = NodePath("../../Player")
+allies_path = NodePath("..")
+
+[node name="Basic4" parent="Allies" instance=ExtResource( 8 )]
+player_path = NodePath("../../Player")
+allies_path = NodePath("..")
+
+[node name="Basic5" parent="Allies" instance=ExtResource( 8 )]
+player_path = NodePath("../../Player")
+allies_path = NodePath("..")
+
+[node name="Basic6" parent="Allies" instance=ExtResource( 8 )]
+player_path = NodePath("../../Player")
+allies_path = NodePath("..")
