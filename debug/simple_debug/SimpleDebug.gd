@@ -16,11 +16,11 @@ func add_label(_name: String) -> void:
 	label.add_font_override("font", font)
 	add_child(label)
 
-func update_label(_name: String, _value:String) -> void:
+func update_label(_name: String, _value) -> void:
 	if not run:
 		return
 	if has_node(_name):
 		var label = get_node(_name)
-		label.text = "[" + _name + "]: " + _value
+		label.text = "[" + _name + "]: " + str(_value)
 	else:
 		push_warning("No label [%s] exists for debug in [%s] " % [_name, parent.name])
