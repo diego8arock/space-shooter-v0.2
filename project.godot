@@ -14,10 +14,30 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://core/crosshair/Crosshair.gd"
 }, {
+"base": "Area2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://interfaces/enemy.gd"
+}, {
+"base": "Node2D",
+"class": "EnemyRewindController",
+"language": "GDScript",
+"path": "res://core/rewind/EnemyRewindController.gd"
+}, {
+"base": "Node2D",
+"class": "EnemySteering",
+"language": "GDScript",
+"path": "res://core/movement/EnemySteering.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://core/player/Player.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerRewindController",
+"language": "GDScript",
+"path": "res://core/rewind/PlayerRewindController.gd"
 }, {
 "base": "VBoxContainer",
 "class": "SimpleDebug",
@@ -31,7 +51,11 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Crosshair": "",
+"Enemy": "res://interfaces/enemy.gd",
+"EnemyRewindController": "",
+"EnemySteering": "res://core/movement/EnemySteering.gd",
 "Player": "res://core/player/Player.tscn",
+"PlayerRewindController": "",
 "SimpleDebug": "",
 "WeaponContainer": ""
 }
@@ -39,12 +63,15 @@ _global_script_class_icons={
 [application]
 
 config/name="space-shooter-v0.2"
+run/main_scene="res://test/Test.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 TimeManager="*res://autoloads/time_manager.gd"
 ReferenceManager="*res://autoloads/reference_manager.gd"
+GroupManager="*res://autoloads/group_manager.gd"
+FunctionManager="*res://autoloads/function_manager.gd"
 
 [debug]
 
@@ -97,6 +124,11 @@ button_left={
 button_right={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+rewind={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"unicode":0,"echo":false,"script":null)
  ]
 }
 
