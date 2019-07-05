@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://core/allies/basic/Basic.gd" type="Script" id=1]
+[ext_resource path="res://debug/simple_debug/SimpleDebug.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/sprites/allies/playerShip1_green.png" type="Texture" id=3]
+
+[node name="Basic" type="Area2D"]
+script = ExtResource( 1 )
+
+[node name="SimpleDebug" parent="." instance=ExtResource( 2 )]
+rect_scale = Vector2( 2, 2 )
+run = true
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -2.45181, 2.52121, -1.78032, 7.3006, 1.6166, 7.3006, 2.32758, 2.52121, 7.06747, -0.322721, 8.29194, 0.190767, 8.68694, 1.09925, 9.47692, 1.33624, 9.87191, 0.94125, 9.35842, -4.78612, 8.68694, -4.94412, 8.29194, -4.15413, 7.34397, -4.74662, 2.80157, -5.37861, 1.5376, -7.51156, -1.58283, -7.55106, -2.6888, -5.6156, -7.98168, -4.47013, -8.69267, -4.98361, -9.36415, -5.02311, -9.91714, 0.862251, -9.04816, 1.21774, -8.29768, 0.230266, -7.3892, -0.243723 )
