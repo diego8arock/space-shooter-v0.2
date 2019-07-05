@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://core/enemies/basic/Basic.gd" type="Script" id=1]
 [ext_resource path="res://debug/simple_debug/SimpleDebug.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/sprites/enemies/basic/enemyBlue1.png" type="Texture" id=3]
+[ext_resource path="res://core/movement/EnemySteering.tscn" type="PackedScene" id=4]
+[ext_resource path="res://core/rewind/EnemyRewindController.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 45.0
@@ -21,14 +23,31 @@ rect_scale = Vector2( 2.5, 2.5 )
 run = true
 
 [node name="Sprite" type="Sprite" parent="."]
-rotation = -1.5708
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 3 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-rotation = -1.5708
 polygon = PoolVector2Array( -11.4651, -16.7798, -4.56599, -14.2095, -3.61906, -10.2865, 3.28002, -9.8807, 3.82112, -13.3979, 11.6671, -16.7798, 18.7015, -6.22825, 9.63799, 16.3628, 4.35183, 14.475, 7.20302, 4.72911, 5.98553, 3.51162, 4.81575, 6.24029, -4.43071, 6.21714, -5.91875, 3.91745, -7.54206, 4.32328, -4.56599, 14.7395, -9.30065, 16.4981, -18.3641, -6.22825 )
 
 [node name="WanderOffset" type="CollisionShape2D" parent="."]
-position = Vector2( 60, 0 )
+position = Vector2( 0, 60 )
 shape = SubResource( 1 )
+
+[node name="RayCast2DCenter" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 0, 100 )
+collide_with_areas = true
+
+[node name="RayCast2DRight" type="RayCast2D" parent="."]
+rotation = 0.785398
+enabled = true
+cast_to = Vector2( 0, 100 )
+
+[node name="RayCast2DLeft" type="RayCast2D" parent="."]
+rotation = -0.785398
+enabled = true
+cast_to = Vector2( 0, 100 )
+
+[node name="EnemySteering" parent="." instance=ExtResource( 4 )]
+
+[node name="EnemyRewindController" parent="." instance=ExtResource( 5 )]
