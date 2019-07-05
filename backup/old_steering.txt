@@ -1,0 +1,59 @@
+func nothing() -> Vector2:
+	return Vector2()
+	
+func seek(_target: Vector2) -> Vector2:
+	desired_velocity = (_target - global_position).normalized() * TimeManager.adjust_speed(max_velocity)
+	return desired_velocity - velocity
+	
+func flee(_target: Vector2) -> Vector2:
+	desired_velocity = (global_position - _target).normalized() * TimeManager.adjust_speed(max_velocity)
+	return desired_velocity - velocity
+	
+func arrival(_target: Vector2, _radius: float) -> Vector2:
+		
+	desired_velocity = _target - global_position
+	var distance = desired_velocity.length()
+	if distance < _radius:
+		desired_velocity = desired_velocity.normalized() * TimeManager.adjust_speed(max_velocity) * (distance / _radius)
+	else:
+		desired_velocity = desired_velocity.normalized() * TimeManager.adjust_speed(max_velocity)
+	return desired_velocity - velocity
+	
+func wander() -> Vector2:
+	
+	var circle_center: Vector2
+	circle_center = Vector2(velocity.x, velocity.y)
+	circle_center = circle_center.normalized()
+	circle_center *= wander_offset.position.x
+	
+	var displacement: Vector2
+	displacement = Vector2(0, -1)
+	displacement *= (wander_offset.shape as CircleShape2D).radius	
+	
+	var length = displacement.length()
+	displacement.x = cos(wander_angle) * length
+	displacement.y = sin(wander_angle) * length
+	
+	wander_angle += deg2rad(randf() * ANGLE_CHANGE - ANGLE_CHANGE * 0.5)
+	
+	var wander_force: Vector2
+	wander_force = circle_center + displacement
+	return wander_force		
+
+func pursuit(_target_global_position: Vector2, _target_velocity: Vector2, _target_max_speed: float) -> Vector2:
+	
+	var future_position: Vector2 = target_position_prediction(_target_global_position, _target_velocity, _target_max_speed)
+	return seek(future_position)
+	
+func evade(_target_global_position: Vector2, _target_velocity: Vector2, _target_max_speed: float) -> Vector2:
+	
+	var future_position: Vector2 = target_position_prediction(_target_global_position, _target_velocity, _target_max_speed)
+	return flee(future_position)
+	
+func target_position_prediction(_target_global_position: Vector2, _target_velocity: Vector2, _target_max_speed: float) -> Vector2:
+	
+	var distance: Vector2 = _target_global_position - global_position
+	var T: int = int(distance.length() / _target_max_speed)
+	var future_position: Vector2 = _target_global_position + _target_velocity * T
+	return future_position
+	
